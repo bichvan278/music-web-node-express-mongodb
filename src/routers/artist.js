@@ -31,6 +31,17 @@ router.post('/artist/newArtist', uploadArtist.single('image'), [auth, isAll], as
     }
 });
 
+// Count all artist (Admin)
+router.get('/artists/countAllArtist', async (req,res) => {
+    try {
+        const count_artists = await Artist.estimatedDocumentCount()
+        res.status(200).send({count_artists})
+    }
+    catch (e) {
+        res.status(500).send(e)
+    }
+})
+
 // Read all artist
 router.get('/allArtist', async (req,res) => {
     try {
@@ -116,7 +127,7 @@ router.patch('/artist/:id', async (req, res) => {
 });
 
 // Delete artist by ID
-router.delete('/artist/:id', [auth, isAll], async (req, res) => {
+router.delete('/artist/deleteArtist/:id', [auth, isAll], async (req, res) => {
     try {
         const artistDelete = await Artist.findOneAndDelete({ _id: req.params.id })
         if (!artistDelete) {

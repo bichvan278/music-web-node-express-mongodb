@@ -9,7 +9,7 @@ const playlistSchema = new mongoose.Schema({
         maxlength: 20
     },
     image: {
-        type: Buffer
+        type: String
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,

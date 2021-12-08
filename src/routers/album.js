@@ -55,6 +55,17 @@ router.get('/album/getAllSinglesinAlbum/:id', async (req, res)=>{
     }
 })
 
+// Count all albums (Admin)
+router.get('/albums/countAllAlbums', async (req, res) => {
+    try{
+        const count_albums = await Album.estimatedDocumentCount()
+        res.status(200).send({count_albums})
+    }
+    catch (e) {
+        res.status(500).send(e)
+    }
+});
+
 // Read all albums
 router.get('/allAlbums', async (req, res) => {
     try{
@@ -151,7 +162,7 @@ router.patch('/album/:id', [auth, isAdmin], async (req, res) => {
 });
 
 // Delete Album by ID
-router.delete('/album/:id', [auth, isAdmin], async (req, res) => {
+router.delete('/album/deleteAlbum/:id', [auth, isAdmin], async (req, res) => {
     try {
         const albumDelete = await Album.findOneAndDelete({ _id: req.params.id })
         if (!albumDelete) {

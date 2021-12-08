@@ -4,8 +4,18 @@ const User = require('./../models/user')
 const {auth} = require('./../middleware/auth')
 const {Role} = require('../models/role')
 
+// Read Member role
+router.get('/roleMember', async (req, res) => {
+    try {
+        const role = await Role.findById({_id: '61968ec62044450b2cd19238'})
+        res.status(200).send(role)
+    } catch (error) {
+        res.status(500).send(error)
+    }
+});
+
 // Create a new user (SignUp)
-router.post('/users', async (req, res) => {
+router.post('/users/signup', async (req, res) => {
     const user = new User(req.body)
     try {
         await user.save()

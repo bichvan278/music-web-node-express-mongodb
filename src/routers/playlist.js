@@ -6,6 +6,7 @@ const {auth, isAdmin, isMember, isAll} = require('./../middleware/auth')
 const multer = require('multer')
 
 // Create a new Playlist (User + Admin)
+
 const uploadPlaylist = multer({
     limits: {
         fileSize: 10000000
@@ -18,16 +19,34 @@ const uploadPlaylist = multer({
     }
 })
 
-router.post('/playlist/newPlaylist', [auth, isAll], uploadPlaylist.single('image'), async (req,res) => {
+// const fileFilter = (req, file, cb) => {
+//     const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+//     if (!allowedTypes.includes(file.mimetype)) {
+//       const error = new Error("Incorrect file");
+//       error.code = "INCORRECT_FILETYPE";
+//       return cb(error, false)
+//     }
+//     cb(null, true);
+//   }
+  
+//   const uploadPlaylist = multer({
+//     fileFilter,
+//     limits: {
+//       fileSize: 5000000
+//     }
+//   });
+
+router.post('/playlist/newPlaylist', [auth, isAll], async (req,res) => {
     const playlist = new Playlist({
-        ...req.body,
-        image: req.file.originalname,
+        // name: req.body.name,
+        // image: req.body.strImg,
+        ... req.body,
         createdBy: req.user._id
     })
 
     try {
         await playlist.save()
-        res.status(201).json({playlist})
+        res.status(201).send({playlist})
     }
     catch (e) {
         res.status(400).send(e)
@@ -41,6 +60,21 @@ router.post('/playlist/addSingleintoPlaylist', [auth,isAll], async (req, res) =>
         await addSingleintoPlaylist.save()
         res.status(201).send({addSingleintoPlaylist})
     }catch(e){
+        res.status(500).send(e)
+    }
+});
+
+// Read image of artist by ID
+router.get('/playlist/:id/image', async (req, res) => {
+    const _id = req.params.id
+    try {
+        const img = await Playlist.findById({_id})
+        const getImg = img.image;
+        // console.log(getImg)
+        res.set('Content-Type', 'image/jpg')
+        res.send({getImg})
+    } 
+    catch (e) {
         res.status(500).send(e)
     }
 });
@@ -71,6 +105,17 @@ router.get('/playlist/getAllSinglesinPlaylist/:id', async (req, res)=>{
         res.status(500).send(e)
     }
 })
+
+// Read all Playlists
+router.get('/playlists/countAllPlaylists', async (req, res) => {
+    try{
+        const count_playlists = await Playlist.estimatedDocumentCount()
+        res.status(200).send({count_playlists})
+    }
+    catch (e) {
+        res.status(500).send(e)
+    }
+});
 
 // Read all Playlists
 router.get('/allPlaylists', async (req, res) => {

@@ -17,6 +17,7 @@ const uploadImg = multer({
 })
 
 const uploadAudio = multer({
+    dest: "./../uploads/audio",
     limits: {
         fileSize: 1000000000
     },
@@ -29,19 +30,30 @@ const uploadAudio = multer({
 })
 
 // Create a new single (User + Admin)
-router.post('/singles/newSingle', [auth, isAll], uploadAudio.single('audio'), async (req,res) => {
+router.post('/singles/newSingle', [auth, isAll], async (req,res) => {
     const single = new Single({
         ...req.body,
-        audio: req.file.originalname,
+        // audio: req.file.buffer,
         postBy: req.user._id
     })
 
     try {
         await single.save()
-        res.status(201).send(single)
+        res.status(201).send({single})
     }
     catch (e) {
         res.status(400).send(e)
+    }
+});
+
+// COUNT all singles (Admin)
+router.get('/singles/countAllsingles', async (req, res) => {
+    try{
+        const count_singles = await Single.estimatedDocumentCount()
+        res.send({count_singles})
+    }
+    catch (e) {
+        res.status(500).send(e)
     }
 });
 
@@ -153,7 +165,7 @@ router.patch('/singles/:id', [auth, isAll], async (req, res) => {
 });
 
 // Delete a single
-router.delete('/singles/:id', [auth, isAll], async (req, res) => {
+router.delete('/singles/deleteSingle/:id', [auth, isAll], async (req, res) => {
     try {
         const singleDelete = await Single.findOneAndDelete({ _id: req.params.id, postBy: req.user._id})
         if (!singleDelete) {

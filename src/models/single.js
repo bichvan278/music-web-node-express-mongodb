@@ -14,11 +14,10 @@ const singleSchema = new mongoose.Schema({
         ref: 'Artist'
     },
     image: {
-        type: Buffer
+        type: String
     },
     audio: {
-        type: Buffer,
-        required: true
+        type: Buffer
     },
     postBy: {
         type: mongoose.Schema.Types.ObjectId,
