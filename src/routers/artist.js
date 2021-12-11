@@ -17,10 +17,9 @@ const uploadArtist = multer({
     }
 })
 
-router.post('/artist/newArtist', uploadArtist.single('image'), [auth, isAll], async (req, res) => {
+router.post('/artist/newArtist', [auth, isAll], async (req, res) => {
     const artist = new Artist({
-        ...req.body, 
-        image: req.file.file
+        ...req.body
     })
     try {
         await artist.save()

@@ -4,7 +4,7 @@ const Comment = require('./../models/comment')
 const {auth, isAdmin, isMember, isAll} = require('./../middleware/auth')
 
 // Add comment in a single
-router.post('/comment/addCmt', [auth, isAll], async (req,res) => {
+router.post('/comment/addCmt', [auth, isMember], async (req,res) => {
     const cmt = new Comment({
         ...req.body,
         cmtBy: req.user._id

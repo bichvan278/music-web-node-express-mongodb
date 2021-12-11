@@ -9,7 +9,7 @@ const artistSchema = new mongoose.Schema({
         maxlength: 20
     },
     image: {
-        type: Buffer
+        type: String
     },
     dob: {
         type: Date

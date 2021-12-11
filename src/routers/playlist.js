@@ -38,8 +38,6 @@ const uploadPlaylist = multer({
 
 router.post('/playlist/newPlaylist', [auth, isAll], async (req,res) => {
     const playlist = new Playlist({
-        // name: req.body.name,
-        // image: req.body.strImg,
         ... req.body,
         createdBy: req.user._id
     })
@@ -106,7 +104,7 @@ router.get('/playlist/getAllSinglesinPlaylist/:id', async (req, res)=>{
     }
 })
 
-// Read all Playlists
+// COUNT Playlists
 router.get('/playlists/countAllPlaylists', async (req, res) => {
     try{
         const count_playlists = await Playlist.estimatedDocumentCount()
@@ -189,6 +187,20 @@ router.delete('/playlist/deletePlaylist/:id', [auth, isAll], async (req, res) =>
             return res.status(404).send()
         }
         res.send(playlistDelete)
+    }
+    catch (e) {
+        res.status(500).send(e)
+    }
+});
+
+// Delete Single in Playlist
+router.delete('/playlist/:id_play/deleteSingleinPlaylist/:id_del', [auth, isAll], async (req, res) => {
+    try {
+        const playlistDeletesingle = await Playlist_Single.findOneAndDelete({ singleIn: req.params.id_del, ofPlaylist: req.params.id_play })
+        if (!playlistDeletesingle) {
+            return res.status(404).send()
+        }
+        res.send(playlistDeletesingle)
     }
     catch (e) {
         res.status(500).send(e)

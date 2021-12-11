@@ -18,10 +18,9 @@ const uploadAlbum = multer({
     }
 })
 
-router.post('/album/newAlbum', [auth, isAdmin], uploadAlbum.single('image'), async (req,res) => {
+router.post('/album/newAlbum', [auth, isAdmin], async (req,res) => {
     const album = new Album({
-        ...req.body,
-        image: req.file
+        ...req.body
     })
 
     try {
@@ -135,7 +134,7 @@ router.get('/myAlbum', [auth, isAdmin], async (req, res) => {
 // Update Album by ID (only User + Admin)
 router.patch('/album/:id', [auth, isAdmin], async (req, res) => {
     const updates = Object.keys(req.body)
-    const allowedUpdate = ["name","image"]
+    const allowedUpdate = ["name","alBofArtist","image"]
     const isValidOperation = updates.every((update) => allowedUpdate.includes(update))
     if(!isValidOperation) {
         return res.status(400).send({error: 'Invalid update!'})

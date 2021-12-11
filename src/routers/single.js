@@ -138,7 +138,7 @@ router.get('/allSingles/artist/:id', async (req, res)=>{
 // Update single by ID (only User + Admin)
 router.patch('/singles/:id', [auth, isAll], async (req, res) => {
     const updates = Object.keys(req.body)
-    const allowedUpdate = ["name","image","audio"]
+    const allowedUpdate = ["name","artistID","image","audio"]
     const isValidOperation = updates.every((update) => allowedUpdate.includes(update))
     if(!isValidOperation) {
         return res.status(400).send({error: 'Invalid update!'})
