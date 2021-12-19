@@ -174,4 +174,18 @@ router.delete('/album/deleteAlbum/:id', [auth, isAdmin], async (req, res) => {
     }
 });
 
+// Delete Single in Album
+router.delete('/album/:id_alb/deleteSingleinAlbum/:id_del', [auth, isAdmin], async (req, res) => {
+    try {
+        const albumDeletesingle = await Alb_Single.findOneAndDelete({ singleInAlb: req.params.id_del, ofAlbum: req.params.id_alb })
+        if (!albumDeletesingle) {
+            return res.status(404).send()
+        }
+        res.send(albumDeletesingle)
+    }
+    catch (e) {
+        res.status(500).send(e)
+    }
+});
+
 module.exports = router;
