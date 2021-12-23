@@ -17,7 +17,7 @@ const singleSchema = new mongoose.Schema({
         type: String
     },
     audio: {
-        type: Buffer
+        type: String
     },
     postBy: {
         type: mongoose.Schema.Types.ObjectId,

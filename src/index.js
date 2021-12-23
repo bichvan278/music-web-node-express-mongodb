@@ -43,11 +43,11 @@ const Artist = require('./models/artist')
 // test()
 
 // GET artist by artist ID in single document
-const test = async () => {
-    const singles = await Single.findOne({_id: '619cb33c2a0a024b95cd4a6b'}).populate('artistID')
-    console.log(singles.artistID.name)
-}
-test()
+// const test = async () => {
+//     const singles = await Single.findOne({_id: '619cb33c2a0a024b95cd4a6b'}).populate('artistID')
+//     console.log(singles.artistID.name)
+// }
+// test()
 
 
 

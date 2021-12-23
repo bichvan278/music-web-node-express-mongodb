@@ -17,23 +17,23 @@ const uploadImg = multer({
 })
 
 const uploadAudio = multer({
-    dest: "./../uploads/audio",
+    dest: 'uploads/audio',
     limits: {
-        fileSize: 1000000000
+        fileSize: 1000000000000
     },
     fileFilter(req, file, cb){
-        if(!file.originalname.match(/\.(mp3)$/)){
-            return cb(new Error('Please upload your mp3 file!'))
+        if(!file.originalname.match(/\.(mp3|mp4)$/)){
+            return cb(new Error('Please upload your image file!'))
         }
         cb(undefined, true)
     }
 })
 
 // Create a new single (User + Admin)
-router.post('/singles/newSingle', [auth, isAll], async (req,res) => {
+router.post('/singles/newSingle', uploadAudio.single('audio'), [auth, isAll], async (req,res) => {
     const single = new Single({
         ...req.body,
-        // audio: req.file.buffer,
+        audio: req.file,
         postBy: req.user._id
     })
 
