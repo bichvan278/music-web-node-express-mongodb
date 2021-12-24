@@ -30,10 +30,9 @@ const uploadAudio = multer({
 })
 
 // Create a new single (User + Admin)
-router.post('/singles/newSingle', uploadAudio.single('audio'), [auth, isAll], async (req,res) => {
+router.post('/singles/newSingle', [auth, isAll], async (req,res) => {
     const single = new Single({
         ...req.body,
-        audio: req.file,
         postBy: req.user._id
     })
 
