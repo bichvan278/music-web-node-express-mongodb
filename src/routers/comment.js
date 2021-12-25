@@ -34,8 +34,8 @@ router.get('/allComments', async (req, res) => {
 router.get('/allComments/single/:id', async (req, res)=>{
     const _id = req.params.id
     try{
-        const allCmt = await Comment.find({ cmtofSingle: _id }).populate('cmtofSingle').populate('cmtBy')
-        res.send(allCmt)
+        const allCmt = await Comment.find({ cmtofSingle: _id }).populate('cmtofSingle','_id').populate('cmtBy')
+        res.send({allCmt})
     }catch(e){
         res.status(500).send(e)
     }

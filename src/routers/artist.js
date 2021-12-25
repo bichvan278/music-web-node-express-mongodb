@@ -97,7 +97,7 @@ router.get('/findArtist', async (req, res) => {
 
 // Update artist by ID (only Admin)
 router.patch('/artist/:id', async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     const updates = Object.keys(req.body)
     const allowedUpdate = ["name","image","dob","description"]
     const isValidOperation = updates.every((update) => allowedUpdate.includes(update))
