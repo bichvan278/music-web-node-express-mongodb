@@ -8,8 +8,7 @@ const userSchema =  new mongoose.Schema({
     fullname: {
         type: String,
         required: true,
-        unique: true,
-        maxlength: 20
+        maxlength: 50
     },
     email: {
         type: String,
@@ -33,12 +32,13 @@ const userSchema =  new mongoose.Schema({
         }
     },
     image: {
-        type: Buffer
+        type: String
     },
     username: {
         type: String,
         unique: true,
-        require: true
+        require: true,
+        maxlength: 30
     },
     password: {
         type: String,
